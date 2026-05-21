@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Praktikum ML | Clustering & PCA</title>
+  <title>Praktikum ML | Clustering dan PCA</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <nav class="navbar">
-    <div class="nav-inner container">
+    <div class="container nav-inner">
       <a href="#home" class="brand">
         <span class="brand-logo">ML</span>
-        <span>
+        <span class="brand-text">
           <strong>Praktikum Pembelajaran Mesin</strong>
-          <small>Pertemuan 1 · Clustering & PCA</small>
+          <small>Pertemuan 1 · Clustering dan PCA</small>
         </span>
       </a>
 
@@ -29,138 +29,213 @@
 
   <header id="home" class="hero">
     <div class="container hero-grid">
-      <div class="hero-copy">
+      <section class="hero-copy">
         <p class="badge"><span></span> Modul Interaktif Praktikum</p>
         <h1>Clustering dan PCA, dijelaskan pelan-pelan sampai kebayang.</h1>
         <p class="hero-text">
-          Website ini dibuat agar praktikan tidak hanya menyalin kode dari Colab, tetapi juga memahami apa yang sedang terjadi saat cluster terbentuk, parameter digeser, dan hasil evaluasi berubah.
+          Website ini membantu praktikan memahami konsep clustering dan PCA dengan bahasa awam.
+          Praktikan bisa membaca penjelasan, melihat rumus penting, lalu mencoba demo interaktifnya.
         </p>
-        <div class="hero-actions">
-          <a href="#konsep" class="btn primary">Mulai dari Konsep</a>
-          <a href="#kmeans" class="btn secondary">Coba Demo</a>
-        </div>
-      </div>
 
-      <div class="hero-preview" aria-label="Preview visualisasi clustering">
+        <div class="hero-actions">
+          <a href="#konsep" class="btn btn-primary">Mulai dari Konsep</a>
+          <a href="#kmeans" class="btn btn-secondary">Coba Demo</a>
+        </div>
+      </section>
+
+      <aside class="hero-preview">
         <div class="window-top">
-          <i></i><i></i><i></i>
-          <span>interactive-clustering.js</span>
+          <i></i>
+          <i></i>
+          <i></i>
+          <span>preview-clustering.js</span>
         </div>
-        <canvas id="heroCanvas" width="520" height="320"></canvas>
+
+        <canvas id="heroCanvas" width="560" height="340"></canvas>
+
         <div class="preview-stats">
-          <div><small>Dataset</small><strong>4 Cluster</strong></div>
-          <div><small>Demo</small><strong>Interaktif</strong></div>
-          <div><small>Bahasa</small><strong>Awam</strong></div>
+          <div>
+            <small>Dataset</small>
+            <strong>4 cluster</strong>
+          </div>
+          <div>
+            <small>Demo</small>
+            <strong>Interaktif</strong>
+          </div>
+          <div>
+            <small>Bahasa</small>
+            <strong>Awam</strong>
+          </div>
         </div>
-      </div>
+      </aside>
     </div>
   </header>
 
   <main class="container main-content">
     <section id="konsep" class="overview-card">
-      <div>
+      <div class="overview-copy">
         <p class="section-label">Gambaran Umum</p>
-        <h2>Apa yang dipelajari di pertemuan ini?</h2>
+        <h2>Apa yang dipelajari?</h2>
         <p>
-          Pada pertemuan ini, kita belajar <b>unsupervised learning</b>. Artinya, data yang kita punya belum punya label jawaban. Algoritma diminta menemukan pola sendiri dari data tersebut.
+          Pada pertemuan ini, kita belajar <b>unsupervised learning</b>. Artinya, data yang digunakan
+          belum punya label jawaban. Algoritma diminta mencari pola sendiri dari data tersebut.
         </p>
         <p>
-          Clustering dipakai untuk mencari kelompok data yang mirip. PCA dipakai untuk menyederhanakan data yang punya banyak fitur agar lebih mudah divisualisasikan.
+          <b>Clustering</b> digunakan untuk mencari kelompok data yang mirip. <b>PCA</b> digunakan untuk
+          menyederhanakan data yang punya banyak fitur agar lebih mudah dilihat dalam bentuk visual.
         </p>
       </div>
+
       <div class="overview-list">
         <article>
           <span>01</span>
           <strong>Hierarchical Clustering</strong>
-          <p>Data dikelompokkan secara bertahap, dari kelompok kecil menjadi kelompok besar.</p>
+          <p>Mengelompokkan data secara bertahap dari kelompok kecil menjadi kelompok besar.</p>
         </article>
+
         <article>
           <span>02</span>
           <strong>K-Means Clustering</strong>
-          <p>Data dimasukkan ke cluster berdasarkan titik pusat terdekat.</p>
+          <p>Mengelompokkan data berdasarkan titik pusat cluster yang disebut centroid.</p>
         </article>
+
         <article>
           <span>03</span>
           <strong>DBSCAN</strong>
-          <p>Cluster dibentuk dari area yang padat, sedangkan titik jauh bisa dianggap noise.</p>
+          <p>Mencari cluster dari area yang padat dan menandai titik jauh sebagai noise.</p>
         </article>
+
         <article>
           <span>04</span>
           <strong>PCA</strong>
-          <p>Banyak fitur diringkas menjadi komponen utama agar lebih mudah dilihat.</p>
+          <p>Meringkas banyak fitur menjadi beberapa komponen utama yang lebih mudah divisualisasikan.</p>
         </article>
       </div>
     </section>
 
-    <section class="concept-strip">
-      <div>
+    <section class="formula-intro">
+      <div class="section-heading">
         <p class="section-label">Sebelum Masuk Demo</p>
-        <h2>Angka evaluasi yang sering muncul</h2>
+        <h2>Rumus dan angka yang akan sering muncul</h2>
+        <p>
+          Rumus di bagian ini tidak perlu dihafalkan mentah-mentah. Yang penting adalah memahami
+          apa arti simbolnya dan bagaimana hubungannya dengan demo.
+        </p>
       </div>
+
       <div class="formula-grid">
         <article class="formula-card">
           <h3>Euclidean Distance</h3>
           <code>d(x,y) = √((x₂ - x₁)² + (y₂ - y₁)²)</code>
-          <p>Dipakai untuk mengukur jarak dua titik. Makin kecil jaraknya, makin mirip datanya.</p>
+          <ul>
+            <li><b>d(x,y)</b> berarti jarak antara dua titik data.</li>
+            <li><b>x₁, y₁</b> adalah posisi titik pertama.</li>
+            <li><b>x₂, y₂</b> adalah posisi titik kedua.</li>
+          </ul>
+          <p>
+            Gampangnya, rumus ini menghitung seberapa jauh dua titik. Kalau jaraknya kecil,
+            dua data dianggap lebih mirip.
+          </p>
         </article>
+
         <article class="formula-card">
           <h3>Silhouette Score</h3>
           <code>s = (b - a) / max(a, b)</code>
-          <p>Dipakai untuk melihat apakah cluster sudah rapi. Nilai mendekati 1 biasanya lebih baik.</p>
+          <ul>
+            <li><b>a</b> adalah rata-rata jarak data ke teman satu cluster.</li>
+            <li><b>b</b> adalah rata-rata jarak data ke cluster terdekat lain.</li>
+            <li><b>s</b> adalah nilai silhouette.</li>
+          </ul>
+          <p>
+            Nilai mendekati 1 berarti cluster cenderung rapi. Nilai sekitar 0 berarti data berada
+            di batas antar cluster.
+          </p>
         </article>
+
         <article class="formula-card">
           <h3>Explained Variance</h3>
           <code>Total informasi = PC1 + PC2 + ... + PCn</code>
-          <p>Dipakai pada PCA untuk melihat berapa banyak informasi yang masih dipertahankan.</p>
+          <ul>
+            <li><b>PC1</b> adalah komponen utama pertama.</li>
+            <li><b>PC2</b> adalah komponen utama kedua.</li>
+            <li><b>PCn</b> adalah komponen utama ke-n.</li>
+          </ul>
+          <p>
+            Semakin banyak komponen yang dipakai, semakin banyak informasi yang dipertahankan.
+            Namun data juga menjadi kurang sederhana.
+          </p>
         </article>
       </div>
     </section>
 
-    <section id="hierarchical" class="lesson-section blue-section">
-      <div class="section-header">
+    <section id="hierarchical" class="lesson-section lesson-blue">
+      <div class="section-heading split-heading">
         <div>
           <p class="section-label">Materi 1</p>
           <h2>Hierarchical Clustering</h2>
           <p>
-            Hierarchical Clustering adalah metode clustering yang membentuk kelompok secara bertahap. Awalnya setiap data dianggap sebagai kelompok sendiri, lalu data yang paling mirip digabung sampai jumlah cluster sesuai keinginan.
+            Hierarchical Clustering adalah metode clustering yang membentuk kelompok secara bertahap.
+            Awalnya setiap data dianggap sebagai kelompok sendiri, lalu kelompok yang paling mirip
+            digabung sedikit demi sedikit.
           </p>
         </div>
         <span class="chip">Bertahap</span>
       </div>
 
       <div class="lesson-grid">
-        <div class="explain-card">
-          <h3>Definisi sederhananya</h3>
+        <article class="explain-card">
+          <h3>Apa itu?</h3>
           <p>
-            Bayangkan kamu punya banyak mahasiswa. Awalnya mereka berdiri sendiri-sendiri. Lalu mahasiswa yang kebiasaannya mirip digabung. Setelah itu, kelompok yang mirip juga digabung lagi. Proses ini terus berjalan sampai terbentuk beberapa kelompok besar.
+            Bayangkan semua mahasiswa berdiri sendiri. Lalu mahasiswa yang kebiasaannya mirip digabung.
+            Setelah itu, kelompok kecil yang mirip digabung lagi. Lama-lama terbentuk beberapa kelompok besar.
           </p>
 
-          <div class="formula-card compact">
-            <h3>Rumus jarak yang sering dipakai</h3>
+          <div class="term-card">
+            <h4>Istilah penting</h4>
+            <dl>
+              <div>
+                <dt>Distance</dt>
+                <dd>Jarak antar data. Data yang dekat dianggap lebih mirip.</dd>
+              </div>
+              <div>
+                <dt>Linkage</dt>
+                <dd>Aturan untuk menentukan kelompok mana yang digabung terlebih dahulu.</dd>
+              </div>
+              <div>
+                <dt>Dendrogram</dt>
+                <dd>Gambar seperti pohon yang menunjukkan urutan penggabungan data.</dd>
+              </div>
+              <div>
+                <dt>Cut</dt>
+                <dd>Garis potong pada dendrogram untuk menentukan jumlah cluster akhir.</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="formula-card compact-formula">
+            <h4>Rumus jarak</h4>
             <code>d(x,y) = √((x₂ - x₁)² + (y₂ - y₁)²)</code>
-            <p>Rumus ini membantu algoritma menentukan dua data mana yang paling dekat dan paling layak digabung.</p>
+            <p>
+              Rumus ini membantu algoritma menentukan dua data mana yang paling dekat. Data yang paling dekat
+              biasanya digabung lebih dulu.
+            </p>
           </div>
 
-          <div class="simple-points">
-            <div><b>1</b><span>Awalnya setiap data adalah cluster sendiri.</span></div>
-            <div><b>2</b><span>Data atau kelompok yang jaraknya paling dekat akan digabung.</span></div>
-            <div><b>3</b><span>Proses berhenti saat jumlah cluster sudah sesuai.</span></div>
-          </div>
-
-          <div class="behavior-box">
-            <h3>Kalau parameternya diubah?</h3>
-            <p><b>Jumlah cluster kecil:</b> beberapa kelompok yang berbeda bisa digabung.</p>
+          <div class="behavior-box blue-box">
+            <h4>Kalau parameternya diubah?</h4>
+            <p><b>Jumlah cluster kecil:</b> beberapa kelompok kecil akan digabung menjadi kelompok besar.</p>
             <p><b>Jumlah cluster besar:</b> kelompok menjadi lebih banyak dan lebih detail.</p>
-            <p><b>Linkage berubah:</b> cara algoritma menilai jarak antar kelompok juga berubah.</p>
+            <p><b>Linkage berubah:</b> cara algoritma menilai kedekatan antar kelompok ikut berubah.</p>
           </div>
-        </div>
+        </article>
 
-        <div class="demo-card">
+        <article class="demo-card">
           <div class="demo-controls two-controls">
             <label class="control-box">
               <span>Jumlah Cluster <b id="hierarchicalKValue">4</b></span>
               <input id="hierarchicalK" type="range" min="2" max="6" value="4" />
             </label>
+
             <label class="control-box">
               <span>Linkage</span>
               <select id="linkageSelect">
@@ -170,71 +245,127 @@
               </select>
             </label>
           </div>
-          <canvas id="hierarchicalCanvas" width="650" height="420"></canvas>
+
+          <canvas id="hierarchicalCanvas" width="680" height="430"></canvas>
+
           <div class="metric-grid">
-            <div><small>Cluster</small><strong id="hierarchicalClusterCount">4</strong></div>
-            <div><small>Silhouette</small><strong id="hierarchicalSilhouette">0.000</strong></div>
+            <div>
+              <small>Cluster</small>
+              <strong id="hierarchicalClusterCount">4</strong>
+            </div>
+            <div>
+              <small>Silhouette</small>
+              <strong id="hierarchicalSilhouette">0.000</strong>
+            </div>
           </div>
-          <div class="demo-guide">
-            <h3>Cara membaca demo</h3>
-            <p id="hierarchicalGuide">Warna menunjukkan kelompok data. Saat jumlah cluster digeser, data akan digabung atau dipisah ulang berdasarkan aturan linkage.</p>
+
+          <div class="demo-guide blue-box">
+            <h4>Cara membaca demo</h4>
+            <p id="hierarchicalGuide">
+              Di kiri ada titik data. Di kanan ada mini dendrogram. Garis merah menunjukkan posisi potong
+              untuk menentukan jumlah cluster akhir.
+            </p>
           </div>
-        </div>
+
+          <div class="try-box blue-box">
+            <b>Coba amati:</b> geser jumlah cluster dari 6 ke 2. Perhatikan bagaimana garis potong pada
+            dendrogram berubah dan warna cluster ikut menyatu.
+          </div>
+        </article>
       </div>
     </section>
 
-    <section id="kmeans" class="lesson-section green-section">
-      <div class="section-header">
+    <section id="kmeans" class="lesson-section lesson-green">
+      <div class="section-heading split-heading">
         <div>
           <p class="section-label">Materi 2</p>
           <h2>K-Means Clustering</h2>
           <p>
-            K-Means adalah metode clustering yang membagi data ke dalam beberapa kelompok berdasarkan titik pusat cluster. Titik pusat ini disebut <b>centroid</b>.
+            K-Means membagi data menjadi beberapa kelompok berdasarkan titik pusat cluster yang disebut
+            <b>centroid</b>. Setiap data akan masuk ke cluster dengan centroid terdekat.
           </p>
         </div>
         <span class="chip">Centroid</span>
       </div>
 
       <div class="lesson-grid">
-        <div class="explain-card">
-          <h3>Definisi sederhananya</h3>
+        <article class="explain-card">
+          <h3>Apa itu?</h3>
           <p>
-            K-Means bekerja seperti membagi peserta ke beberapa pos terdekat. Setiap peserta akan memilih pos yang jaraknya paling dekat. Setelah semua peserta masuk pos, posisi pos dihitung ulang agar lebih pas di tengah kelompok.
+            K-Means seperti membagi peserta ke beberapa pos terdekat. Setiap peserta memilih pos yang
+            jaraknya paling dekat. Setelah semua peserta masuk pos, posisi pos dihitung ulang agar berada
+            di tengah kelompok.
           </p>
 
-          <div class="formula-card compact green-formula">
-            <h3>Rumus penting</h3>
+          <div class="term-card">
+            <h4>Istilah penting</h4>
+            <dl>
+              <div>
+                <dt>K</dt>
+                <dd>Jumlah cluster yang ingin dibuat.</dd>
+              </div>
+              <div>
+                <dt>Centroid</dt>
+                <dd>Titik pusat dari sebuah cluster.</dd>
+              </div>
+              <div>
+                <dt>Inertia</dt>
+                <dd>Ukuran seberapa dekat data ke centroid.</dd>
+              </div>
+              <div>
+                <dt>Silhouette</dt>
+                <dd>Ukuran seberapa rapi hasil cluster.</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="formula-card compact-formula green-formula">
+            <h4>Rumus inertia</h4>
             <code>Inertia = Σ jarak² data ke centroid terdekat</code>
-            <p>Inertia menunjukkan seberapa rapat data terhadap pusat clusternya. Makin kecil inertia, data cenderung makin dekat ke pusat cluster.</p>
+            <ul>
+              <li><b>Σ</b> berarti semua jarak dijumlahkan.</li>
+              <li><b>jarak²</b> berarti jarak dikuadratkan agar jarak besar lebih terasa.</li>
+              <li><b>centroid</b> adalah pusat cluster.</li>
+            </ul>
+            <p>
+              Kalau inertia kecil, titik-titik dekat dengan pusat clusternya. Tetapi inertia hampir selalu turun
+              saat K ditambah, jadi tidak boleh melihat inertia saja.
+            </p>
           </div>
 
-          <div class="simple-points">
-            <div><b>K</b><span>Jumlah cluster yang ingin dibuat.</span></div>
-            <div><b>C</b><span>Centroid, yaitu titik pusat dari sebuah cluster.</span></div>
-            <div><b>I</b><span>Inertia, yaitu ukuran seberapa menyebar data dari pusat cluster.</span></div>
+          <div class="behavior-box green-box">
+            <h4>Kalau nilai K digeser?</h4>
+            <p><b>K terlalu kecil:</b> kelompok berbeda bisa dipaksa bergabung.</p>
+            <p><b>K terlalu besar:</b> kelompok alami bisa terpecah terlalu banyak.</p>
+            <p><b>K yang pas:</b> cluster terlihat rapi dan silhouette cukup tinggi.</p>
           </div>
+        </article>
 
-          <div class="behavior-box green-behavior">
-            <h3>Kalau nilai K digeser?</h3>
-            <p><b>K terlalu kecil:</b> cluster yang seharusnya berbeda bisa tergabung.</p>
-            <p><b>K terlalu besar:</b> cluster bisa terpecah terlalu banyak.</p>
-            <p><b>K yang pas:</b> warna cluster terlihat rapi dan angka silhouette cukup tinggi.</p>
-          </div>
-        </div>
-
-        <div class="demo-card">
+        <article class="demo-card">
           <div class="demo-controls">
             <label class="control-box">
               <span>Nilai K <b id="kmeansKValue">4</b></span>
               <input id="kmeansK" type="range" min="2" max="8" value="4" />
             </label>
           </div>
-          <canvas id="kmeansCanvas" width="650" height="420"></canvas>
+
+          <canvas id="kmeansCanvas" width="680" height="430"></canvas>
+
           <div class="metric-grid three-metric">
-            <div><small>Cluster</small><strong id="kmeansClusterCount">4</strong></div>
-            <div><small>Inertia</small><strong id="kmeansInertia">0.00</strong></div>
-            <div><small>Silhouette</small><strong id="kmeansSilhouette">0.000</strong></div>
+            <div>
+              <small>Cluster</small>
+              <strong id="kmeansClusterCount">4</strong>
+            </div>
+            <div>
+              <small>Inertia</small>
+              <strong id="kmeansInertia">0.00</strong>
+            </div>
+            <div>
+              <small>Silhouette</small>
+              <strong id="kmeansSilhouette">0.000</strong>
+            </div>
           </div>
+
           <div class="mini-chart-card">
             <div class="mini-chart-title">
               <strong>Mini Elbow Method</strong>
@@ -242,130 +373,208 @@
             </div>
             <div id="elbowChart" class="bar-chart"></div>
           </div>
-          <div class="demo-guide green-guide">
-            <h3>Cara membaca demo</h3>
-            <p id="kmeansGuide">Warna menunjukkan cluster. Titik hitam bertuliskan C adalah centroid. Saat K digeser, data akan dibagi ulang mengikuti jumlah cluster yang diminta.</p>
+
+          <div class="demo-guide green-box">
+            <h4>Cara membaca demo</h4>
+            <p id="kmeansGuide">
+              Warna menunjukkan cluster. Titik hitam C adalah centroid. Garis tipis menunjukkan contoh
+              jarak titik ke centroid.
+            </p>
           </div>
-        </div>
+
+          <div class="try-box green-box">
+            <b>Coba amati:</b> naikkan K dari 2 sampai 8. Perhatikan inertia turun, tetapi cluster belum tentu
+            makin masuk akal.
+          </div>
+        </article>
       </div>
     </section>
 
-    <section id="dbscan" class="lesson-section orange-section">
-      <div class="section-header">
+    <section id="dbscan" class="lesson-section lesson-orange">
+      <div class="section-heading split-heading">
         <div>
           <p class="section-label">Materi 3</p>
           <h2>DBSCAN</h2>
           <p>
-            DBSCAN adalah metode clustering yang mencari kelompok berdasarkan kepadatan data. Titik yang berada di area ramai akan masuk cluster, sedangkan titik yang jauh dan sendirian bisa dianggap <b>noise</b>.
+            DBSCAN mencari cluster berdasarkan kepadatan. Kalau banyak titik saling berdekatan, area itu
+            dianggap cluster. Titik yang terlalu jauh bisa dianggap <b>noise</b>.
           </p>
         </div>
         <span class="chip">Density</span>
       </div>
 
       <div class="lesson-grid">
-        <div class="explain-card">
-          <h3>Definisi sederhananya</h3>
+        <article class="explain-card">
+          <h3>Apa itu?</h3>
           <p>
-            Bayangkan kamu melihat orang berkumpul di lapangan. Kalau banyak orang berdiri berdekatan, itu bisa dianggap satu kerumunan. Kalau ada satu orang berdiri jauh sendiri, orang itu dianggap tidak masuk kerumunan mana pun.
+            Bayangkan kamu melihat orang di lapangan. Kalau banyak orang berdiri berdekatan, itu disebut
+            kerumunan. Kalau ada satu orang berdiri jauh sendiri, dia tidak masuk kerumunan mana pun.
           </p>
 
-          <div class="formula-card compact orange-formula">
-            <h3>Konsep penting</h3>
+          <div class="term-card">
+            <h4>Istilah penting</h4>
+            <dl>
+              <div>
+                <dt>eps</dt>
+                <dd>Radius atau jarak maksimal untuk mencari tetangga.</dd>
+              </div>
+              <div>
+                <dt>min_samples</dt>
+                <dd>Jumlah tetangga minimal agar area dianggap padat.</dd>
+              </div>
+              <div>
+                <dt>Core Point</dt>
+                <dd>Titik yang punya cukup banyak tetangga.</dd>
+              </div>
+              <div>
+                <dt>Noise</dt>
+                <dd>Titik yang tidak masuk cluster mana pun.</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="formula-card compact-formula orange-formula">
+            <h4>Konsep parameter</h4>
             <code>eps = radius tetangga</code>
-            <code>min_samples = tetangga minimal</code>
-            <p>DBSCAN tidak meminta jumlah cluster dari awal. Namun hasilnya sangat bergantung pada eps dan min_samples.</p>
+            <code>min_samples = jumlah tetangga minimal</code>
+            <p>
+              DBSCAN tidak meminta jumlah cluster dari awal. Tetapi hasilnya sangat bergantung pada
+              seberapa besar radius eps dan seberapa ketat min_samples.
+            </p>
           </div>
 
-          <div class="simple-points">
-            <div><b>Core</b><span>Titik yang punya cukup banyak tetangga.</span></div>
-            <div><b>Border</b><span>Titik yang dekat dengan core, tapi tetangganya belum cukup banyak.</span></div>
-            <div><b>Noise</b><span>Titik yang terlalu jauh dari kelompok mana pun.</span></div>
-          </div>
-
-          <div class="behavior-box orange-behavior">
-            <h3>Kalau parameternya digeser?</h3>
-            <p><b>eps kecil:</b> area tetangga sempit, noise bisa bertambah.</p>
-            <p><b>eps besar:</b> area tetangga luas, cluster bisa menyatu.</p>
+          <div class="behavior-box orange-box">
+            <h4>Kalau parameternya digeser?</h4>
+            <p><b>eps kecil:</b> radius sempit, noise bisa bertambah.</p>
+            <p><b>eps besar:</b> radius luas, cluster bisa menyatu.</p>
             <p><b>min_samples besar:</b> syarat cluster makin ketat, noise bisa bertambah.</p>
           </div>
-        </div>
+        </article>
 
-        <div class="demo-card">
+        <article class="demo-card">
           <div class="demo-controls two-controls">
             <label class="control-box">
               <span>eps <b id="epsValue">0.55</b></span>
               <input id="epsSlider" type="range" min="0.20" max="1.25" step="0.05" value="0.55" />
             </label>
+
             <label class="control-box">
               <span>min_samples <b id="minSamplesValue">5</b></span>
               <input id="minSamplesSlider" type="range" min="3" max="12" value="5" />
             </label>
           </div>
-          <canvas id="dbscanCanvas" width="650" height="420"></canvas>
+
+          <canvas id="dbscanCanvas" width="680" height="430"></canvas>
+
           <div class="metric-grid three-metric">
-            <div><small>Cluster</small><strong id="dbscanClusterCount">0</strong></div>
-            <div><small>Noise</small><strong id="dbscanNoiseCount">0</strong></div>
-            <div><small>Silhouette</small><strong id="dbscanSilhouette">0.000</strong></div>
+            <div>
+              <small>Cluster</small>
+              <strong id="dbscanClusterCount">0</strong>
+            </div>
+            <div>
+              <small>Noise</small>
+              <strong id="dbscanNoiseCount">0</strong>
+            </div>
+            <div>
+              <small>Silhouette</small>
+              <strong id="dbscanSilhouette">0.000</strong>
+            </div>
           </div>
-          <div class="demo-guide orange-guide">
-            <h3>Cara membaca demo</h3>
-            <p id="dbscanGuide">Titik abu-abu adalah noise. Saat eps atau min_samples digeser, jumlah cluster dan noise bisa berubah.</p>
+
+          <div class="demo-guide orange-box">
+            <h4>Cara membaca demo</h4>
+            <p id="dbscanGuide">Lingkaran putus-putus menunjukkan radius eps. Titik abu-abu berarti noise.</p>
           </div>
-        </div>
+
+          <div class="try-box orange-box">
+            <b>Coba amati:</b> kecilkan eps sampai noise bertambah, lalu besarkan eps sampai cluster mulai menyatu.
+          </div>
+        </article>
       </div>
     </section>
 
-    <section id="pca" class="lesson-section purple-section">
-      <div class="section-header">
+    <section id="pca" class="lesson-section lesson-purple">
+      <div class="section-heading split-heading">
         <div>
           <p class="section-label">Materi 4</p>
           <h2>Reduksi Dimensi dengan PCA</h2>
           <p>
-            PCA membantu meringkas data yang punya banyak fitur menjadi beberapa komponen utama. Tujuannya agar data lebih sederhana, tetapi informasi pentingnya tetap banyak yang tersimpan.
+            PCA digunakan untuk meringkas data yang punya banyak fitur menjadi beberapa komponen utama.
+            PCA bukan algoritma clustering, tetapi sering membantu visualisasi data.
           </p>
         </div>
         <span class="chip">Reduksi Dimensi</span>
       </div>
 
       <div class="lesson-grid">
-        <div class="explain-card">
-          <h3>Definisi sederhananya</h3>
+        <article class="explain-card">
+          <h3>Apa itu?</h3>
           <p>
-            PCA seperti merangkum buku tebal menjadi catatan singkat. Tidak semua detail ikut, tetapi inti pentingnya tetap dibawa. Pada dataset Iris, data awal punya 4 fitur dan bisa diringkas menjadi 2 komponen agar mudah digambar di grafik 2D.
+            PCA seperti merangkum buku tebal menjadi catatan singkat. Tidak semua detail ikut, tetapi inti
+            pentingnya tetap dibawa. Misalnya data Iris punya 4 fitur, lalu diringkas menjadi 2 komponen
+            agar bisa digambar dalam grafik 2D.
           </p>
 
-          <div class="formula-card compact purple-formula">
-            <h3>Rumus penting</h3>
+          <div class="term-card">
+            <h4>Istilah penting</h4>
+            <dl>
+              <div>
+                <dt>Dimensi</dt>
+                <dd>Jumlah fitur atau kolom pada data.</dd>
+              </div>
+              <div>
+                <dt>PC1</dt>
+                <dd>Komponen utama pertama, biasanya membawa informasi terbesar.</dd>
+              </div>
+              <div>
+                <dt>PC2</dt>
+                <dd>Komponen utama kedua, membawa informasi penting berikutnya.</dd>
+              </div>
+              <div>
+                <dt>Explained Variance</dt>
+                <dd>Persentase informasi yang masih dipertahankan.</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="formula-card compact-formula purple-formula">
+            <h4>Rumus informasi</h4>
             <code>Total informasi = PC1 + PC2 + ... + PCn</code>
-            <p>Semakin banyak komponen yang dipakai, semakin banyak informasi yang dipertahankan. Namun data juga menjadi kurang sederhana.</p>
+            <p>
+              Kalau PC1 dan PC2 menyimpan sekitar 95% informasi, berarti data yang awalnya punya banyak fitur
+              masih cukup baik diringkas menjadi 2 komponen.
+            </p>
           </div>
 
-          <div class="simple-points">
-            <div><b>PC1</b><span>Komponen utama pertama, menyimpan informasi terbesar.</span></div>
-            <div><b>PC2</b><span>Komponen utama kedua, menambah informasi penting berikutnya.</span></div>
-            <div><b>%</b><span>Persentase informasi yang masih dipertahankan setelah reduksi.</span></div>
-          </div>
-
-          <div class="behavior-box purple-behavior">
-            <h3>Kalau jumlah komponen digeser?</h3>
-            <p><b>1 komponen:</b> sangat ringkas, tapi banyak informasi hilang.</p>
+          <div class="behavior-box purple-box">
+            <h4>Kalau jumlah komponen digeser?</h4>
+            <p><b>1 komponen:</b> sangat ringkas, tapi informasi lebih banyak hilang.</p>
             <p><b>2 komponen:</b> cocok untuk visualisasi 2D.</p>
-            <p><b>3-4 komponen:</b> informasi makin banyak, tapi visualisasi makin sulit.</p>
+            <p><b>3-4 komponen:</b> informasi makin banyak, tapi tidak sesederhana 2D.</p>
           </div>
-        </div>
+        </article>
 
-        <div class="demo-card">
+        <article class="demo-card">
           <div class="demo-controls">
             <label class="control-box">
               <span>Jumlah Komponen <b id="pcaComponentValue">2</b></span>
               <input id="pcaComponentSlider" type="range" min="1" max="4" value="2" />
             </label>
           </div>
-          <canvas id="pcaCanvas" width="650" height="420"></canvas>
+
+          <canvas id="pcaCanvas" width="680" height="430"></canvas>
+
           <div class="metric-grid">
-            <div><small>Informasi Dipertahankan</small><strong id="pcaVariance">95.81%</strong></div>
-            <div><small>Dimensi Awal</small><strong>4 fitur</strong></div>
+            <div>
+              <small>Informasi Dipertahankan</small>
+              <strong id="pcaVariance">95.81%</strong>
+            </div>
+            <div>
+              <small>Dimensi Awal</small>
+              <strong>4 fitur</strong>
+            </div>
           </div>
+
           <div class="mini-chart-card">
             <div class="mini-chart-title">
               <strong>Explained Variance</strong>
@@ -373,22 +582,42 @@
             </div>
             <div id="varianceChart" class="bar-chart"></div>
           </div>
-          <div class="demo-guide purple-guide">
-            <h3>Cara membaca demo</h3>
-            <p id="pcaGuide">Grafik menampilkan hasil ringkasan data ke 2D. Slider menunjukkan berapa banyak komponen yang dipakai dan berapa persen informasi yang masih tersimpan.</p>
+
+          <div class="demo-guide purple-box">
+            <h4>Cara membaca demo</h4>
+            <p id="pcaGuide">
+              Grafik menampilkan ringkasan data dalam 2D. Slider menunjukkan berapa banyak komponen
+              yang dipakai untuk mempertahankan informasi.
+            </p>
           </div>
-        </div>
+
+          <div class="try-box purple-box">
+            <b>Coba amati:</b> pilih 1 komponen, lalu 2 komponen. Perhatikan persentase informasi yang dipertahankan.
+          </div>
+        </article>
       </div>
     </section>
 
     <section class="summary-section">
       <p class="section-label">Kesimpulan</p>
-      <h2>Ringkasan singkat per metode</h2>
+      <h2>Ringkasan singkat</h2>
       <div class="summary-grid">
-        <article><strong>Hierarchical</strong><p>Bagus untuk melihat proses penggabungan cluster secara bertahap.</p></article>
-        <article><strong>K-Means</strong><p>Bagus jika kita punya perkiraan jumlah cluster yang ingin dibuat.</p></article>
-        <article><strong>DBSCAN</strong><p>Bagus untuk data yang punya noise dan cluster tidak selalu berbentuk bulat.</p></article>
-        <article><strong>PCA</strong><p>Bagus untuk menyederhanakan fitur dan membantu visualisasi data.</p></article>
+        <article>
+          <strong>Hierarchical</strong>
+          <p>Fokus pada proses penggabungan data secara bertahap.</p>
+        </article>
+        <article>
+          <strong>K-Means</strong>
+          <p>Fokus pada centroid dan jumlah cluster K yang kita tentukan.</p>
+        </article>
+        <article>
+          <strong>DBSCAN</strong>
+          <p>Fokus pada kepadatan, radius eps, dan data noise.</p>
+        </article>
+        <article>
+          <strong>PCA</strong>
+          <p>Fokus pada reduksi dimensi dan informasi yang dipertahankan.</p>
+        </article>
       </div>
     </section>
   </main>
