@@ -17,12 +17,7 @@ function normal(rand) {
 
 function makeBlobData() {
   const rand = rng(42);
-  const centers = [
-    [-2.2, -1.3],
-    [1.8, -1.1],
-    [-1.4, 1.8],
-    [2.0, 1.7]
-  ];
+  const centers = [[-2.2, -1.3], [1.8, -1.1], [-1.4, 1.8], [2.0, 1.7]];
   const data = [];
 
   centers.forEach(([cx, cy], cluster) => {
@@ -41,11 +36,7 @@ function makeBlobData() {
 
 function makePcaData() {
   const rand = rng(11);
-  const centers = [
-    [-2.25, 0.25],
-    [0.25, -0.52],
-    [1.65, 0.38]
-  ];
+  const centers = [[-2.25, 0.25], [0.25, -0.52], [1.65, 0.38]];
   const names = ["Setosa", "Versicolor", "Virginica"];
   const data = [];
 
@@ -79,10 +70,7 @@ function meanPoint(points) {
     return acc;
   }, { x: 0, y: 0 });
 
-  return {
-    x: total.x / points.length,
-    y: total.y / points.length
-  };
+  return { x: total.x / points.length, y: total.y / points.length };
 }
 
 function runKMeans(data, k, maxIter = 30) {
@@ -159,9 +147,7 @@ function runDBSCAN(data, eps, minSamples) {
         }
       }
 
-      if (labels[current] === undefined || labels[current] === -1) {
-        labels[current] = currentCluster;
-      }
+      if (labels[current] === undefined || labels[current] === -1) labels[current] = currentCluster;
     }
   }
 
@@ -190,9 +176,7 @@ function clusterDistance(clusterA, clusterB, linkage) {
   const distances = [];
 
   clusterA.points.forEach((a) => {
-    clusterB.points.forEach((b) => {
-      distances.push(distance(a, b));
-    });
+    clusterB.points.forEach((b) => distances.push(distance(a, b)));
   });
 
   if (linkage === "single") return Math.min(...distances);
@@ -201,10 +185,7 @@ function clusterDistance(clusterA, clusterB, linkage) {
 }
 
 function runHierarchical(data, targetClusters, linkage) {
-  let clusters = data.map((point, index) => ({
-    points: [point],
-    indexes: [index]
-  }));
+  let clusters = data.map((point, index) => ({ points: [point], indexes: [index] }));
 
   while (clusters.length > targetClusters) {
     let bestI = 0;
@@ -233,9 +214,7 @@ function runHierarchical(data, targetClusters, linkage) {
 
   const labels = new Array(data.length).fill(0);
   clusters.forEach((cluster, clusterIndex) => {
-    cluster.indexes.forEach((pointIndex) => {
-      labels[pointIndex] = clusterIndex;
-    });
+    cluster.indexes.forEach((pointIndex) => labels[pointIndex] = clusterIndex);
   });
 
   return { labels, clusterCount: clusters.length };
@@ -320,7 +299,7 @@ function drawScatter(canvasId, data, labels, options = {}) {
     ctx.beginPath();
     ctx.arc(sx, sy, options.radius || 5.2, 0, Math.PI * 2);
     ctx.fillStyle = color;
-    ctx.globalAlpha = label === -1 ? 0.58 : 0.86;
+    ctx.globalAlpha = label === -1 ? 0.58 : 0.88;
     ctx.fill();
     ctx.globalAlpha = 1;
   });
@@ -394,7 +373,7 @@ function drawLegend(ctx, width, height, labels) {
   });
 }
 
-function renderBars(containerId, values, options = {}) {
+function renderBars(containerId, values) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
@@ -408,7 +387,6 @@ function renderBars(containerId, values, options = {}) {
     const bar = document.createElement("div");
     bar.className = "bar";
     bar.style.height = `${Math.max(12, (item.value / max) * 118)}px`;
-    if (options.color) bar.style.background = options.color;
 
     const label = document.createElement("div");
     label.className = "bar-label";
@@ -420,6 +398,13 @@ function renderBars(containerId, values, options = {}) {
   });
 }
 
+function explainSilhouette(score) {
+  if (score >= 0.7) return "Nilai silhouette tinggi, berarti cluster terlihat cukup rapi dan jarak antar kelompok cukup jelas.";
+  if (score >= 0.45) return "Nilai silhouette sedang, berarti cluster sudah terbentuk tetapi masih ada beberapa titik yang dekat dengan batas antar cluster.";
+  if (score >= 0.15) return "Nilai silhouette rendah, berarti beberapa cluster mulai bercampur atau belum terlalu rapi.";
+  return "Nilai silhouette sangat rendah, berarti pembagian cluster kurang jelas atau terlalu dipaksakan.";
+}
+
 function updateHierarchical() {
   const k = Number(document.getElementById("hierarchicalK").value);
   const linkage = document.getElementById("linkageSelect").value;
@@ -429,6 +414,13 @@ function updateHierarchical() {
   document.getElementById("hierarchicalKValue").textContent = k;
   document.getElementById("hierarchicalClusterCount").textContent = result.clusterCount;
   document.getElementById("hierarchicalSilhouette").textContent = score.toFixed(3);
+
+  let linkageText = "Average melihat rata-rata jarak antar kelompok, jadi hasilnya cenderung seimbang.";
+  if (linkage === "single") linkageText = "Single melihat jarak terdekat antar kelompok. Kadang cluster bisa terlihat seperti rantai panjang.";
+  if (linkage === "complete") linkageText = "Complete melihat jarak terjauh antar kelompok. Hasilnya biasanya lebih ketat dan tidak mudah menyatu.";
+
+  document.getElementById("hierarchicalGuide").textContent =
+    `Sekarang data dibagi menjadi ${k} cluster. ${linkageText} ${explainSilhouette(score)}`;
 
   drawScatter("hierarchicalCanvas", DATA, result.labels);
 }
@@ -443,15 +435,18 @@ function updateKMeans() {
   document.getElementById("kmeansInertia").textContent = result.inertia.toFixed(1);
   document.getElementById("kmeansSilhouette").textContent = score.toFixed(3);
 
+  let kMeaning = "Nilai K ini cukup masuk akal untuk dataset yang memang terlihat punya beberapa kelompok alami.";
+  if (k <= 2) kMeaning = "K masih kecil, jadi beberapa kelompok yang sebenarnya berbeda kemungkinan digabung menjadi satu.";
+  if (k >= 7) kMeaning = "K sudah besar, jadi beberapa kelompok bisa terpecah terlalu detail.";
+
+  document.getElementById("kmeansGuide").textContent =
+    `Dengan K = ${k}, data dipaksa menjadi ${k} kelompok. ${kMeaning} Inertia saat ini ${result.inertia.toFixed(1)}; makin kecil berarti titik makin dekat dengan centroid, tetapi K terlalu besar juga belum tentu lebih baik. ${explainSilhouette(score)}`;
+
   drawScatter("kmeansCanvas", DATA, result.labels, { centers: result.centers });
 
   const bars = [];
   for (let kk = 2; kk <= 8; kk++) {
-    bars.push({
-      label: `K=${kk}`,
-      value: runKMeans(DATA, kk).inertia,
-      active: kk === k
-    });
+    bars.push({ label: `K=${kk}`, value: runKMeans(DATA, kk).inertia, active: kk === k });
   }
   renderBars("elbowChart", bars);
 }
@@ -468,6 +463,14 @@ function updateDBSCAN() {
   document.getElementById("dbscanNoiseCount").textContent = result.noiseCount;
   document.getElementById("dbscanSilhouette").textContent = score.toFixed(3);
 
+  let meaning = "Parameter ini cukup seimbang: cluster terbentuk dan noise masih bisa diamati.";
+  if (result.noiseCount > DATA.length * 0.25) meaning = "Noise cukup banyak. Biasanya ini terjadi karena eps terlalu kecil atau min_samples terlalu ketat.";
+  if (result.clusterCount <= 1) meaning = "Cluster terlalu sedikit. Bisa jadi eps terlalu besar sehingga kelompok menyatu, atau aturan kepadatan belum cocok.";
+  if (result.clusterCount > 5) meaning = "Cluster cukup banyak. Bisa jadi eps terlalu kecil sehingga kelompok besar terpecah menjadi kelompok kecil.";
+
+  document.getElementById("dbscanGuide").textContent =
+    `Dengan eps = ${eps.toFixed(2)} dan min_samples = ${minSamples}, terbentuk ${result.clusterCount} cluster dan ${result.noiseCount} noise. ${meaning} Titik abu-abu berarti data yang tidak cukup dekat dengan kelompok mana pun.`;
+
   drawScatter("dbscanCanvas", DATA, result.labels);
 }
 
@@ -477,6 +480,13 @@ function updatePCA() {
 
   document.getElementById("pcaComponentValue").textContent = components;
   document.getElementById("pcaVariance").textContent = `${(total * 100).toFixed(2)}%`;
+
+  let meaning = "Jumlah komponen ini cukup umum dipakai untuk visualisasi karena bisa ditampilkan di grafik 2D.";
+  if (components === 1) meaning = "Data sangat diringkas, tetapi informasi yang hilang lebih banyak. Cocok untuk melihat gambaran paling sederhana saja.";
+  if (components >= 3) meaning = "Informasi yang disimpan makin besar, tetapi data tidak sesederhana visualisasi 2D.";
+
+  document.getElementById("pcaGuide").textContent =
+    `Dengan ${components} komponen, PCA mempertahankan sekitar ${(total * 100).toFixed(2)}% informasi. ${meaning} Grafik tetap menampilkan dua komponen pertama agar mudah dilihat.`;
 
   drawScatter("pcaCanvas", PCA_DATA, PCA_DATA.map((item) => item.cluster), { radius: 5.5 });
 
@@ -495,12 +505,9 @@ function initHeroCanvas() {
 function bindEvents() {
   document.getElementById("hierarchicalK").addEventListener("input", updateHierarchical);
   document.getElementById("linkageSelect").addEventListener("change", updateHierarchical);
-
   document.getElementById("kmeansK").addEventListener("input", updateKMeans);
-
   document.getElementById("epsSlider").addEventListener("input", updateDBSCAN);
   document.getElementById("minSamplesSlider").addEventListener("input", updateDBSCAN);
-
   document.getElementById("pcaComponentSlider").addEventListener("input", updatePCA);
 }
 
