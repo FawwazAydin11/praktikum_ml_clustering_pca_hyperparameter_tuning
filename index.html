@@ -950,19 +950,22 @@
           </div>
 
           <div class="formula-card compact-formula purple-formula">
-            <h4>Contoh istilah di kode</h4>
+            <h4>Istilah inti yang perlu tahu</h4>
             <p>
-              Di Python, Bayesian Optimization bisa dijalankan dengan <code>BayesSearchCV</code>.
-              Bagian yang berisi ruang pencarian parameter disebut <code>search_spaces</code>.
+              Pada Python, Bayesian Optimization biasanya bisa dijalankan menggunakan
+              <code>BayesSearchCV</code>. Bagian ini dipakai untuk mengatur proses pencarian
+              hyperparameter secara lebih terarah.
             </p>
-            <ul>
-              <li><b><code>BayesSearchCV</code></b> adalah alat untuk menjalankan Bayesian Optimization.</li>
-              <li><b><code>search_spaces</code></b> adalah daftar parameter dan rentang nilai yang boleh dicoba.</li>
-              <li><b><code>n_iter</code></b> adalah jumlah percobaan yang dilakukan.</li>
-              <li><b><code>Real</code></b> dipakai untuk parameter berupa angka dalam rentang tertentu.</li>
-              <li><b><code>Categorical</code></b> dipakai untuk parameter berupa pilihan kategori, misalnya <code>linear</code> atau <code>rbf</code>.</li>
-              <li><b><code>log-uniform</code></b> membantu pencarian pada rentang angka yang sangat lebar, misalnya dari 0.001 sampai 1000.</li>
-            </ul>
+            <p>
+              Di dalamnya ada <code>search_spaces</code>, yaitu ruang pencarian yang berisi
+              parameter apa saja yang boleh dicoba dan batas nilai yang boleh dipakai. Setelah ruang
+              pencarian ditentukan, Bayesian Optimization akan mencoba beberapa kombinasi secara
+              bertahap sampai jumlah iterasi selesai.
+            </p>
+            <p>
+              Jadi intinya, <code>BayesSearchCV</code> adalah alat pencariannya, sedangkan
+              <code>search_spaces</code> adalah area pilihan yang boleh dijelajahi oleh algoritma.
+            </p>
           </div>
 
           <div class="behavior-box purple-box">
