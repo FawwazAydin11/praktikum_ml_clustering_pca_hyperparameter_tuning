@@ -655,21 +655,25 @@
         </article>
 
         <article class="formula-card simple-explain-card">
-          <h3>Parameter vs Hyperparameter</h3>
+          <h3>Sebelum Tuning: Apa yang Dicari?</h3>
           <p>
-            <b>Parameter</b> adalah nilai yang dipelajari sendiri oleh model saat proses training.
-            Kita tidak mengaturnya satu per satu secara langsung.
+            Saat melakukan tuning, yang kita cari adalah <b>hyperparameter</b>, yaitu setting awal model
+            yang kita tentukan sebelum proses training dimulai.
           </p>
           <p>
-            <b>Hyperparameter</b> adalah setting yang kita tentukan sebelum model dilatih. Setting inilah
-            yang akan kita cari nilainya lewat tuning.
+            Hyperparameter berbeda dengan parameter. <b>Parameter</b> adalah nilai yang dipelajari sendiri
+            oleh model dari data, sedangkan <b>hyperparameter</b> adalah setting yang kita atur dari awal.
+            Jadi, bagian yang kita utak-atik lewat tuning adalah hyperparameter-nya.
+          </p>
+          <p>
+            Setiap model punya hyperparameter yang berbeda. Contohnya:
           </p>
 
           <div class="example-list">
-            <span>K-Means: <code>n_clusters</code></span>
-            <span>DBSCAN: <code>eps</code>, <code>min_samples</code></span>
-            <span>SVM: <code>C</code>, <code>kernel</code>, <code>gamma</code></span>
-            <span>Random Forest: <code>n_estimators</code>, <code>max_depth</code></span>
+            <span><b>K-Means</b> adalah algoritma clustering. Contoh setting-nya <code>n_clusters</code>, yaitu jumlah cluster yang ingin dibuat.</span>
+            <span><b>DBSCAN</b> adalah clustering berbasis kepadatan. Contoh setting-nya <code>eps</code> dan <code>min_samples</code>.</span>
+            <span><b>SVM</b> adalah algoritma klasifikasi. Contoh setting-nya <code>C</code>, <code>kernel</code>, dan <code>gamma</code>.</span>
+            <span><b>Random Forest</b> adalah model berbasis banyak decision tree. Contoh setting-nya <code>n_estimators</code> dan <code>max_depth</code>.</span>
           </div>
         </article>
 
@@ -692,35 +696,6 @@
         </article>
       </div>
 
-      <div class="term-card tuning-term-card">
-        <h4>Istilah teknis yang akan sering muncul</h4>
-        <dl>
-          <div>
-            <dt>estimator</dt>
-            <dd>Model yang ingin dituning. Contohnya <code>SVC</code> atau <code>RandomForestClassifier</code>.</dd>
-          </div>
-          <div>
-            <dt>search space</dt>
-            <dd>Ruang pilihan setting yang boleh dicoba oleh proses tuning.</dd>
-          </div>
-          <div>
-            <dt>cv</dt>
-            <dd>Cross-validation. Data dibagi menjadi beberapa bagian agar evaluasi model lebih adil.</dd>
-          </div>
-          <div>
-            <dt>scoring</dt>
-            <dd>Patokan nilai untuk memilih model terbaik, misalnya <code>accuracy</code>.</dd>
-          </div>
-          <div>
-            <dt>n_iter</dt>
-            <dd>Jumlah percobaan yang dilakukan pada Random Search atau Bayesian Optimization.</dd>
-          </div>
-          <div>
-            <dt>best result</dt>
-            <dd>Hasil akhir tuning, biasanya berupa <code>best_params_</code> dan <code>best_score_</code>.</dd>
-          </div>
-        </dl>
-      </div>
     </section>
 
     <section id="grid-search" class="lesson-section lesson-green tuning-section">
