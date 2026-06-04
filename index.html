@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Praktikum ML | Clustering dan PCA</title>
+  <title>Praktikum ML | Clustering, PCA, dan Hyperparameter Tuning</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -13,7 +13,7 @@
         <span class="brand-logo">ML</span>
         <span class="brand-text">
           <strong>Praktikum Pembelajaran Mesin</strong>
-          <small>Pertemuan · Clustering dan PCA</small>
+          <small>Pertemuan · Clustering, PCA, dan Hyperparameter Tuning</small>
         </span>
       </a>
 
@@ -23,6 +23,10 @@
         <a href="#kmeans">K-Means</a>
         <a href="#dbscan">DBSCAN</a>
         <a href="#pca">PCA</a>
+        <a href="#tuning">Tuning</a>
+        <a href="#grid-search">Grid</a>
+        <a href="#random-search">Random</a>
+        <a href="#bayesian-optimization">Bayesian</a>
       </div>
     </div>
   </nav>
@@ -31,15 +35,16 @@
     <div class="container hero-grid">
       <section class="hero-copy">
         <p class="badge"><span></span> Modul Interaktif Praktikum</p>
-        <h1>Clustering dan PCA, dijelaskan pelan-pelan sampai kebayang.</h1>
+        <h1>Clustering, PCA, dan tuning model, dijelaskan pelan-pelan sampai kebayang.</h1>
         <p class="hero-text">
-          Website ini membantu praktikan memahami konsep clustering dan PCA dengan bahasa awam.
-          Praktikan bisa membaca penjelasan, melihat rumus penting, lalu mencoba demo interaktifnya.
+          Website ini membantu praktikan memahami konsep clustering, PCA, dan hyperparameter tuning
+          dengan bahasa awam. Praktikan bisa membaca penjelasan, melihat istilah teknis yang diterjemahkan,
+          lalu mencoba demo sederhana yang memang penting.
         </p>
 
         <div class="hero-actions">
           <a href="#konsep" class="btn btn-primary">Mulai dari Konsep</a>
-          <a href="#kmeans" class="btn btn-secondary">Coba Demo</a>
+          <a href="#tuning" class="btn btn-secondary">Lanjut ke Tuning</a>
         </div>
       </section>
 
@@ -48,7 +53,7 @@
           <i></i>
           <i></i>
           <i></i>
-          <span>preview-clustering.js</span>
+          <span>preview-machine-learning.js</span>
         </div>
 
         <canvas id="heroCanvas" width="560" height="340"></canvas>
@@ -109,6 +114,24 @@
           <span>04</span>
           <strong>PCA</strong>
           <p>Meringkas banyak fitur menjadi beberapa komponen utama yang lebih mudah divisualisasikan.</p>
+        </article>
+
+        <article>
+          <span>05</span>
+          <strong>Grid Search</strong>
+          <p>Mencoba semua kombinasi setting model yang sudah kita tentukan.</p>
+        </article>
+
+        <article>
+          <span>06</span>
+          <strong>Random Search</strong>
+          <p>Mencoba sebagian kombinasi secara acak agar pencarian lebih hemat waktu.</p>
+        </article>
+
+        <article>
+          <span>07</span>
+          <strong>Bayesian Optimization</strong>
+          <p>Mencari setting model secara lebih terarah berdasarkan hasil percobaan sebelumnya.</p>
         </article>
       </div>
     </section>
@@ -598,6 +621,421 @@
       </div>
     </section>
 
+
+
+    <section id="tuning" class="formula-intro tuning-intro">
+      <div class="section-heading split-heading">
+        <div>
+          <p class="section-label">Pertemuan 2</p>
+          <h2>Hyperparameter Tuning</h2>
+          <p>
+            Setelah memahami clustering dan PCA, sekarang kita masuk ke bagian tuning. Intinya,
+            model machine learning tidak hanya butuh algoritma yang tepat, tetapi juga butuh
+            <b>setting</b> yang sesuai dengan data. Proses mencari setting terbaik inilah yang disebut
+            <b>hyperparameter tuning</b>.
+          </p>
+        </div>
+        <span class="chip">Model Setting</span>
+      </div>
+
+      <div class="formula-grid">
+        <article class="formula-card">
+          <h3>Masalah Awalnya</h3>
+          <p>
+            Kadang model sudah benar dan dataset sudah siap, tetapi hasilnya belum maksimal.
+            Salah satu penyebabnya adalah setting model yang belum pas. Misalnya nilai <code>C</code>,
+            <code>gamma</code>, atau jumlah pohon pada Random Forest belum cocok.
+          </p>
+          <p>
+            Gampangnya, seperti memasak mie instan: jenis mienya sama, tetapi hasilnya bisa berbeda
+            kalau air, waktu rebus, atau bumbunya tidak pas.
+          </p>
+        </article>
+
+        <article class="formula-card">
+          <h3>Parameter vs Hyperparameter</h3>
+          <ul>
+            <li><b>Parameter</b> adalah nilai yang dipelajari sendiri oleh model saat training.</li>
+            <li><b>Hyperparameter</b> adalah setting yang kita tentukan sebelum model dilatih.</li>
+          </ul>
+          <p>
+            Contoh hyperparameter: <code>n_clusters</code> pada K-Means, <code>eps</code> pada DBSCAN,
+            <code>C</code>, <code>kernel</code>, dan <code>gamma</code> pada SVM.
+          </p>
+        </article>
+
+        <article class="formula-card">
+          <h3>Tujuan Tuning</h3>
+          <p>
+            Tujuan tuning adalah mencari kombinasi hyperparameter yang menghasilkan performa terbaik.
+            Biasanya performa dinilai memakai metric tertentu, misalnya <code>accuracy</code>.
+          </p>
+          <p>
+            Hasil yang biasanya dicari adalah <code>best_params_</code> dan <code>best_score_</code>.
+          </p>
+        </article>
+      </div>
+
+      <div class="term-card tuning-term-card">
+        <h4>Istilah teknis yang akan sering muncul</h4>
+        <dl>
+          <div>
+            <dt>estimator</dt>
+            <dd>Model yang ingin dituning. Contohnya <code>SVC</code> atau <code>RandomForestClassifier</code>.</dd>
+          </div>
+          <div>
+            <dt>search space</dt>
+            <dd>Daftar kemungkinan nilai hyperparameter yang akan dicari.</dd>
+          </div>
+          <div>
+            <dt>cv</dt>
+            <dd>Cross-validation. Data dibagi menjadi beberapa bagian agar evaluasi lebih adil.</dd>
+          </div>
+          <div>
+            <dt>scoring</dt>
+            <dd>Metric yang dipakai untuk menilai model, misalnya <code>accuracy</code>.</dd>
+          </div>
+          <div>
+            <dt>best_params_</dt>
+            <dd>Kombinasi hyperparameter terbaik yang ditemukan selama tuning.</dd>
+          </div>
+          <div>
+            <dt>best_score_</dt>
+            <dd>Skor terbaik dari proses pencarian, sesuai metric yang digunakan.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section id="grid-search" class="lesson-section lesson-green tuning-section">
+      <div class="section-heading split-heading">
+        <div>
+          <p class="section-label">Materi 5</p>
+          <h2>Grid Search</h2>
+          <p>
+            Setelah tahu bahwa model punya banyak setting, pertanyaan berikutnya adalah: bagaimana cara
+            mencari setting terbaik? Cara paling mudah dipahami adalah mencoba semua kemungkinan yang sudah
+            kita tentukan. Inilah ide dari <b>Grid Search</b>.
+          </p>
+        </div>
+        <span class="chip">Coba Semua</span>
+      </div>
+
+      <div class="lesson-grid">
+        <article class="explain-card">
+          <h3>Apa itu?</h3>
+          <p>
+            Grid Search adalah metode hyperparameter tuning yang mencoba <b>semua kombinasi</b> dari daftar
+            parameter yang kita siapkan. Karena semuanya dicoba, metode ini teliti dan mudah dipahami.
+          </p>
+
+          <div class="term-card">
+            <h4>Contoh gampang</h4>
+            <p>
+              Bayangkan kamu ingin mencari kombinasi outfit terbaik. Kamu punya 4 pilihan baju, 2 pilihan
+              celana, dan 2 pilihan sepatu. Grid Search akan mencoba semua kombinasi satu per satu.
+            </p>
+          </div>
+
+          <div class="formula-card compact-formula green-formula">
+            <h4>Contoh di kode</h4>
+            <code>param_grid = { "C": [0.1, 1, 10, 100], "kernel": ["linear", "rbf"], "gamma": ["scale", "auto"] }</code>
+            <ul>
+              <li><b>param_grid</b> adalah daftar pilihan setting yang ingin dicoba.</li>
+              <li><b>C</b> punya 4 pilihan.</li>
+              <li><b>kernel</b> punya 2 pilihan.</li>
+              <li><b>gamma</b> punya 2 pilihan.</li>
+            </ul>
+            <p>
+              Total percobaan = 4 × 2 × 2 = 16 kombinasi. Jadi Grid Search akan mencoba 16 kombinasi itu.
+            </p>
+          </div>
+
+          <div class="behavior-box green-box">
+            <h4>Kelebihan dan kekurangan</h4>
+            <p><b>Kelebihan:</b> teliti, sistematis, dan semua kombinasi yang kita siapkan pasti dicoba.</p>
+            <p><b>Kekurangan:</b> bisa lambat kalau pilihan parameternya terlalu banyak.</p>
+          </div>
+        </article>
+
+        <article class="demo-card tuning-demo-card">
+          <div class="demo-controls three-controls">
+            <label class="control-box">
+              <span>Jumlah nilai C <b id="gridCValue">4</b></span>
+              <input id="gridCSlider" type="range" min="1" max="8" value="4" />
+            </label>
+
+            <label class="control-box">
+              <span>Jumlah gamma <b id="gridGammaValue">2</b></span>
+              <input id="gridGammaSlider" type="range" min="1" max="6" value="2" />
+            </label>
+
+            <label class="control-box">
+              <span>Jumlah kernel <b id="gridKernelValue">2</b></span>
+              <input id="gridKernelSlider" type="range" min="1" max="4" value="2" />
+            </label>
+          </div>
+
+          <div class="metric-grid three-metric">
+            <div>
+              <small>C</small>
+              <strong id="gridCMetric">4</strong>
+            </div>
+            <div>
+              <small>Gamma</small>
+              <strong id="gridGammaMetric">2</strong>
+            </div>
+            <div>
+              <small>Kernel</small>
+              <strong id="gridKernelMetric">2</strong>
+            </div>
+          </div>
+
+          <div class="formula-card compact-formula green-formula tuning-result-card">
+            <h4>Total kombinasi</h4>
+            <code id="gridFormula">4 × 2 × 2 = 16 percobaan</code>
+            <p id="gridGuide">
+              Grid Search akan mencoba semua 16 kombinasi. Kalau jumlah pilihan parameter bertambah,
+              jumlah percobaan juga ikut bertambah.
+            </p>
+          </div>
+
+          <div id="gridCombinationPreview" class="combination-preview" aria-label="Preview kombinasi Grid Search">
+            <span>Semua kombinasi akan dicoba</span>
+          </div>
+
+          <div class="try-box green-box">
+            <b>Coba amati:</b> naikkan jumlah pilihan C, gamma, atau kernel. Perhatikan total percobaan
+            yang bertambah cepat.
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="random-search" class="lesson-section lesson-orange tuning-section">
+      <div class="section-heading split-heading">
+        <div>
+          <p class="section-label">Materi 6</p>
+          <h2>Random Search</h2>
+          <p>
+            Grid Search memang teliti, tetapi bisa lambat kalau kombinasi parameter terlalu banyak.
+            Karena itu, ada pendekatan yang lebih hemat waktu: <b>Random Search</b>. Metode ini hanya
+            mencoba sebagian kombinasi secara acak.
+          </p>
+        </div>
+        <span class="chip">Coba Sebagian</span>
+      </div>
+
+      <div class="lesson-grid">
+        <article class="explain-card">
+          <h3>Apa itu?</h3>
+          <p>
+            Random Search adalah metode tuning yang mengambil beberapa kombinasi parameter secara acak
+            dari ruang pencarian. Jumlah percobaan yang dilakukan ditentukan oleh <code>n_iter</code>.
+          </p>
+
+          <div class="term-card">
+            <h4>Contoh gampang</h4>
+            <p>
+              Bayangkan ada 200 menu makanan. Grid Search mencoba semua menu. Random Search hanya mencoba
+              beberapa menu secara acak, misalnya 20 menu. Lebih cepat, tetapi ada kemungkinan menu terbaik
+              tidak ikut dicoba.
+            </p>
+          </div>
+
+          <div class="formula-card compact-formula orange-formula">
+            <h4>Contoh di kode</h4>
+            <code>RandomizedSearchCV(..., param_distributions=..., n_iter=20, cv=5, scoring="accuracy")</code>
+            <ul>
+              <li><b>param_distributions</b> adalah ruang parameter yang akan diambil secara acak.</li>
+              <li><b>n_iter</b> adalah jumlah kombinasi random yang dicoba.</li>
+              <li><b>cv</b> adalah jumlah pembagian data untuk evaluasi.</li>
+              <li><b>scoring</b> adalah metric penilaian, misalnya accuracy.</li>
+            </ul>
+          </div>
+
+          <div class="behavior-box orange-box">
+            <h4>Kelebihan dan kekurangan</h4>
+            <p><b>Kelebihan:</b> lebih cepat daripada Grid Search dan cocok untuk ruang parameter besar.</p>
+            <p><b>Kekurangan:</b> tidak semua kombinasi dicoba, jadi kombinasi terbaik bisa saja terlewat.</p>
+          </div>
+        </article>
+
+        <article class="demo-card tuning-demo-card">
+          <div class="demo-controls two-controls">
+            <label class="control-box">
+              <span>Total kombinasi <b id="randomTotalValue">200</b></span>
+              <input id="randomTotalSlider" type="range" min="50" max="500" step="50" value="200" />
+            </label>
+
+            <label class="control-box">
+              <span>n_iter <b id="randomIterValue">20</b></span>
+              <input id="randomIterSlider" type="range" min="5" max="100" step="5" value="20" />
+            </label>
+          </div>
+
+          <div class="metric-grid three-metric">
+            <div>
+              <small>Dicoba</small>
+              <strong id="randomTriedMetric">20</strong>
+            </div>
+            <div>
+              <small>Dilewati</small>
+              <strong id="randomSkippedMetric">180</strong>
+            </div>
+            <div>
+              <small>Cakupan</small>
+              <strong id="randomCoverageMetric">10%</strong>
+            </div>
+          </div>
+
+          <div class="random-box-preview" id="randomBoxPreview" aria-label="Preview kombinasi Random Search">
+            <span>Kotak berwarna = kombinasi yang dicoba</span>
+          </div>
+
+          <div class="demo-guide orange-box">
+            <h4>Cara membaca demo</h4>
+            <p id="randomGuide">
+              Dari 200 kemungkinan kombinasi, Random Search hanya mencoba 20 kombinasi. Artinya pencarian
+              lebih cepat, tetapi tidak semua kemungkinan diperiksa.
+            </p>
+          </div>
+
+          <div class="try-box orange-box">
+            <b>Coba amati:</b> naikkan <code>n_iter</code>. Kombinasi yang dicoba bertambah, tetapi prosesnya
+            juga akan semakin lama.
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="bayesian-optimization" class="lesson-section lesson-purple tuning-section">
+      <div class="section-heading split-heading">
+        <div>
+          <p class="section-label">Materi 7</p>
+          <h2>Bayesian Optimization</h2>
+          <p>
+            Random Search lebih cepat, tetapi pemilihannya masih acak. Jika ingin pencarian yang lebih
+            terarah, kita bisa memakai <b>Bayesian Optimization</b>. Metode ini menggunakan hasil percobaan
+            sebelumnya untuk menentukan percobaan berikutnya.
+          </p>
+        </div>
+        <span class="chip">Lebih Adaptif</span>
+      </div>
+
+      <div class="lesson-grid">
+        <article class="explain-card">
+          <h3>Apa itu?</h3>
+          <p>
+            Bayesian Optimization adalah metode tuning yang mencoba belajar dari percobaan sebelumnya.
+            Jika percobaan sebelumnya menunjukkan area parameter tertentu cukup bagus, pencarian berikutnya
+            akan lebih diarahkan ke area yang menjanjikan.
+          </p>
+
+          <div class="term-card">
+            <h4>Contoh gampang</h4>
+            <p>
+              Bayangkan kamu mencari tempat duduk paling nyaman di ruangan. Grid Search mencoba semua kursi.
+              Random Search mencoba beberapa kursi secara acak. Bayesian Optimization mencoba beberapa kursi,
+              lalu belajar area mana yang paling nyaman untuk dicoba lagi.
+            </p>
+          </div>
+
+          <div class="formula-card compact-formula purple-formula">
+            <h4>Contoh di kode</h4>
+            <code>BayesSearchCV(..., search_spaces={ "C": Real(...), "gamma": Real(...), "kernel": Categorical(...) })</code>
+            <ul>
+              <li><b>search_spaces</b> adalah ruang pencarian parameter.</li>
+              <li><b>Real</b> berarti nilainya berupa angka dalam rentang tertentu.</li>
+              <li><b>Categorical</b> berarti pilihannya berupa kategori, misalnya <code>linear</code> atau <code>rbf</code>.</li>
+              <li><b>n_iter</b> adalah jumlah percobaan yang dilakukan.</li>
+            </ul>
+          </div>
+
+          <div class="behavior-box purple-box">
+            <h4>Kelebihan dan kekurangan</h4>
+            <p><b>Kelebihan:</b> lebih terarah daripada Random Search dan bisa efisien untuk ruang parameter besar.</p>
+            <p><b>Kekurangan:</b> konsepnya lebih kompleks dan biasanya butuh library tambahan seperti <code>skopt</code>.</p>
+          </div>
+        </article>
+
+        <article class="demo-card tuning-demo-card">
+          <div class="demo-controls">
+            <label class="control-box">
+              <span>Jumlah Iterasi <b id="bayesIterValue">8</b></span>
+              <input id="bayesIterSlider" type="range" min="3" max="12" value="8" />
+            </label>
+          </div>
+
+          <div class="metric-grid">
+            <div>
+              <small>Iterasi</small>
+              <strong id="bayesIterationMetric">8</strong>
+            </div>
+            <div>
+              <small>Best Score</small>
+              <strong id="bayesBestScoreMetric">0.91</strong>
+            </div>
+          </div>
+
+          <div id="bayesTimeline" class="bayes-timeline" aria-label="Timeline Bayesian Optimization">
+            <span>Iterasi akan ditampilkan di sini</span>
+          </div>
+
+          <div class="demo-guide purple-box">
+            <h4>Cara membaca demo</h4>
+            <p id="bayesGuide">
+              Setiap iterasi adalah percobaan kombinasi parameter. Bayesian Optimization memakai hasil
+              percobaan sebelumnya untuk memilih percobaan berikutnya yang lebih menjanjikan.
+            </p>
+          </div>
+
+          <div class="try-box purple-box">
+            <b>Coba amati:</b> tambah jumlah iterasi. Semakin banyak iterasi, semakin banyak kesempatan
+            metode ini mencari area parameter yang menghasilkan skor tinggi.
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="tuning-comparison" class="summary-section tuning-comparison-section">
+      <p class="section-label">Perbandingan Metode Tuning</p>
+      <h2>Kapan pakai Grid, Random, atau Bayesian?</h2>
+
+      <div class="summary-grid tuning-summary-grid">
+        <article>
+          <strong>Grid Search</strong>
+          <p>
+            Cocok kalau pilihan parameter masih sedikit. Semua kombinasi dicoba, jadi teliti,
+            tetapi bisa lambat kalau kombinasinya terlalu banyak.
+          </p>
+        </article>
+
+        <article>
+          <strong>Random Search</strong>
+          <p>
+            Cocok kalau ruang parameter besar dan kita ingin lebih hemat waktu. Tidak semua kombinasi dicoba,
+            sehingga ada kemungkinan kombinasi terbaik terlewat.
+          </p>
+        </article>
+
+        <article>
+          <strong>Bayesian Optimization</strong>
+          <p>
+            Cocok kalau ingin pencarian lebih adaptif. Metode ini belajar dari percobaan sebelumnya,
+            tetapi konsep dan setup-nya lebih kompleks.
+          </p>
+        </article>
+
+        <article>
+          <strong>Inti Perbedaannya</strong>
+          <p>
+            Grid mencoba semua, Random mencoba sebagian, Bayesian mencoba sambil belajar dari hasil sebelumnya.
+          </p>
+        </article>
+      </div>
+    </section>
+
     <section class="summary-section">
       <p class="section-label">Kesimpulan</p>
       <h2>Ringkasan singkat</h2>
@@ -618,6 +1056,22 @@
           <strong>PCA</strong>
           <p>Fokus pada reduksi dimensi dan informasi yang dipertahankan.</p>
         </article>
+        <article>
+          <strong>Grid Search</strong>
+          <p>Fokus pada pencarian setting model dengan mencoba semua kombinasi.</p>
+        </article>
+        <article>
+          <strong>Random Search</strong>
+          <p>Fokus pada pencarian yang lebih cepat dengan mencoba sebagian kombinasi secara acak.</p>
+        </article>
+        <article>
+          <strong>Bayesian Optimization</strong>
+          <p>Fokus pada pencarian yang lebih adaptif berdasarkan hasil percobaan sebelumnya.</p>
+        </article>
+        <article>
+          <strong>Hyperparameter Tuning</strong>
+          <p>Fokus pada mencari setting model yang paling cocok untuk data dan metric evaluasi.</p>
+        </article>
       </div>
     </section>
   </main>
@@ -625,7 +1079,7 @@
   <footer class="footer">
     <div class="container">
       <strong>Praktikum Pembelajaran Mesin</strong>
-      <p>Website interaktif untuk materi Clustering dan PCA.</p>
+      <p>Website interaktif untuk materi Clustering, PCA, dan Hyperparameter Tuning.</p>
     </div>
   </footer>
 

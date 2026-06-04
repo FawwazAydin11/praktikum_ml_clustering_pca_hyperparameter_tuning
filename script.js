@@ -840,13 +840,179 @@ function initHeroCanvas() {
   });
 }
 
+/* =========================================================
+   Pertemuan 2: Hyperparameter Tuning Demos
+   ========================================================= */
+
+function setText(id, value) {
+  const element = document.getElementById(id);
+  if (element) element.textContent = value;
+}
+
+function getNumber(id, fallback = 0) {
+  const element = document.getElementById(id);
+  return element ? Number(element.value) : fallback;
+}
+
+function updateGridSearchDemo() {
+  const cCount = getNumber("gridCSlider", 4);
+  const gammaCount = getNumber("gridGammaSlider", 2);
+  const kernelCount = getNumber("gridKernelSlider", 2);
+  const total = cCount * gammaCount * kernelCount;
+
+  setText("gridCValue", cCount);
+  setText("gridGammaValue", gammaCount);
+  setText("gridKernelValue", kernelCount);
+  setText("gridCMetric", cCount);
+  setText("gridGammaMetric", gammaCount);
+  setText("gridKernelMetric", kernelCount);
+  setText("gridFormula", `${cCount} × ${gammaCount} × ${kernelCount} = ${total} percobaan`);
+
+  const guide = total <= 20
+    ? `Grid Search akan mencoba semua ${total} kombinasi. Jumlah ini masih cukup kecil, jadi prosesnya relatif mudah dibayangkan.`
+    : total <= 80
+      ? `Grid Search akan mencoba semua ${total} kombinasi. Jumlahnya mulai banyak, jadi waktu proses bisa terasa lebih lama.`
+      : `Grid Search akan mencoba semua ${total} kombinasi. Ini menunjukkan kenapa Grid Search bisa lambat jika pilihan parameter terlalu banyak.`;
+
+  setText("gridGuide", guide);
+
+  const preview = document.getElementById("gridCombinationPreview");
+  if (!preview) return;
+
+  const shown = Math.min(total, 48);
+  const chips = Array.from({ length: shown }, (_, index) => `<div class="combo-chip">${index + 1}</div>`).join("");
+  const more = total > shown ? `<div class="combo-chip more">+${total - shown}</div>` : "";
+
+  preview.innerHTML = `
+    <div class="preview-title">
+      <strong>Preview kombinasi</strong>
+      <small>Semua kotak biru = kombinasi yang dicoba</small>
+    </div>
+    <div class="combo-grid">${chips}${more}</div>
+  `;
+}
+
+function updateRandomSearchDemo() {
+  const total = getNumber("randomTotalSlider", 200);
+  const rawIter = getNumber("randomIterSlider", 20);
+  const tried = Math.min(rawIter, total);
+  const skipped = Math.max(total - tried, 0);
+  const coverage = total ? Math.round((tried / total) * 100) : 0;
+
+  setText("randomTotalValue", total);
+  setText("randomIterValue", tried);
+  setText("randomTriedMetric", tried);
+  setText("randomSkippedMetric", skipped);
+  setText("randomCoverageMetric", `${coverage}%`);
+
+  const guide = coverage < 20
+    ? `Dari ${total} kemungkinan kombinasi, Random Search hanya mencoba ${tried}. Ini cepat, tetapi banyak kombinasi belum diperiksa.`
+    : coverage < 60
+      ? `Dari ${total} kemungkinan kombinasi, Random Search mencoba ${tried}. Cakupannya mulai lebih baik, tetapi tetap tidak mencoba semuanya.`
+      : `Dari ${total} kemungkinan kombinasi, Random Search mencoba ${tried}. Cakupannya besar, tetapi prosesnya juga akan lebih lama.`;
+
+  setText("randomGuide", guide);
+
+  const preview = document.getElementById("randomBoxPreview");
+  if (!preview) return;
+
+  const cellCount = 100;
+  const triedCells = Math.max(1, Math.round((tried / total) * cellCount));
+  const cells = Array.from({ length: cellCount }, (_, index) => {
+    const isTried = index < triedCells;
+    return `<div class="random-cell ${isTried ? "tried" : ""}" title="${isTried ? "Dicoba" : "Dilewati"}"></div>`;
+  }).join("");
+
+  preview.innerHTML = `
+    <div class="preview-title">
+      <strong>Preview pencarian acak</strong>
+      <small>Kotak oranye = kombinasi yang dicoba</small>
+    </div>
+    <div class="random-grid">${cells}</div>
+    <div class="coverage-bar" aria-label="Cakupan Random Search">
+      <div class="coverage-fill" style="width: ${coverage}%"></div>
+    </div>
+  `;
+}
+
+function bayesScoreAt(iteration) {
+  const scores = [0.78, 0.81, 0.84, 0.86, 0.88, 0.895, 0.905, 0.912, 0.917, 0.921, 0.923, 0.925];
+  return scores[Math.max(0, Math.min(iteration - 1, scores.length - 1))];
+}
+
+function updateBayesianDemo() {
+  const iterations = getNumber("bayesIterSlider", 8);
+  const scores = Array.from({ length: iterations }, (_, index) => bayesScoreAt(index + 1));
+  const bestScore = Math.max(...scores);
+
+  setText("bayesIterValue", iterations);
+  setText("bayesIterationMetric", iterations);
+  setText("bayesBestScoreMetric", bestScore.toFixed(3));
+
+  const guide = iterations <= 4
+    ? `Dengan ${iterations} iterasi, Bayesian Optimization baru punya sedikit pengalaman untuk menentukan arah pencarian berikutnya.`
+    : iterations <= 8
+      ? `Dengan ${iterations} iterasi, metode mulai memakai hasil percobaan sebelumnya untuk memilih area parameter yang lebih menjanjikan.`
+      : `Dengan ${iterations} iterasi, kesempatan mencari area skor tinggi makin besar. Namun, semakin banyak iterasi, proses tuning juga semakin lama.`;
+
+  setText("bayesGuide", guide);
+
+  const timeline = document.getElementById("bayesTimeline");
+  if (!timeline) return;
+
+  const items = scores.map((score, index) => {
+    const width = Math.max(8, Math.round(score * 100));
+    const isBest = score === bestScore;
+    return `
+      <div class="timeline-step">
+        <span class="iteration">Iterasi ${index + 1}</span>
+        <div class="timeline-track">
+          <div class="timeline-fill" style="width: ${width}%"></div>
+        </div>
+        <span class="timeline-score">${score.toFixed(3)}${isBest ? " ★" : ""}</span>
+      </div>
+    `;
+  }).join("");
+
+  timeline.innerHTML = `
+    <div class="timeline-title">
+      <strong>Timeline percobaan</strong>
+      <small>★ = skor terbaik sementara</small>
+    </div>
+    <div class="timeline-list">${items}</div>
+  `;
+}
+
+function updateTuningDemos() {
+  updateGridSearchDemo();
+  updateRandomSearchDemo();
+  updateBayesianDemo();
+}
+
+function safeAddInputListener(id, handler) {
+  const element = document.getElementById(id);
+  if (element) element.addEventListener("input", handler);
+}
+
+function safeAddChangeListener(id, handler) {
+  const element = document.getElementById(id);
+  if (element) element.addEventListener("change", handler);
+}
+
 function bindEvents() {
-  document.getElementById("hierarchicalK").addEventListener("input", updateHierarchical);
-  document.getElementById("linkageSelect").addEventListener("change", updateHierarchical);
-  document.getElementById("kmeansK").addEventListener("input", updateKMeans);
-  document.getElementById("epsSlider").addEventListener("input", updateDBSCAN);
-  document.getElementById("minSamplesSlider").addEventListener("input", updateDBSCAN);
-  document.getElementById("pcaComponentSlider").addEventListener("input", updatePCA);
+  safeAddInputListener("hierarchicalK", updateHierarchical);
+  safeAddChangeListener("linkageSelect", updateHierarchical);
+  safeAddInputListener("kmeansK", updateKMeans);
+  safeAddInputListener("epsSlider", updateDBSCAN);
+  safeAddInputListener("minSamplesSlider", updateDBSCAN);
+  safeAddInputListener("pcaComponentSlider", updatePCA);
+
+  safeAddInputListener("gridCSlider", updateGridSearchDemo);
+  safeAddInputListener("gridGammaSlider", updateGridSearchDemo);
+  safeAddInputListener("gridKernelSlider", updateGridSearchDemo);
+  safeAddInputListener("randomTotalSlider", updateRandomSearchDemo);
+  safeAddInputListener("randomIterSlider", updateRandomSearchDemo);
+  safeAddInputListener("bayesIterSlider", updateBayesianDemo);
 }
 
 function init() {
@@ -856,6 +1022,7 @@ function init() {
   updateKMeans();
   updateDBSCAN();
   updatePCA();
+  updateTuningDemos();
 }
 
 window.addEventListener("DOMContentLoaded", init);
