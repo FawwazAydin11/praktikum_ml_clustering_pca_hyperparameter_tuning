@@ -629,50 +629,66 @@
           <p class="section-label">Pertemuan 2</p>
           <h2>Hyperparameter Tuning</h2>
           <p>
-            Setelah memahami clustering dan PCA, sekarang kita masuk ke bagian tuning. Intinya,
-            model machine learning tidak hanya butuh algoritma yang tepat, tetapi juga butuh
-            <b>setting</b> yang sesuai dengan data. Proses mencari setting terbaik inilah yang disebut
-            <b>hyperparameter tuning</b>.
+            Setelah belajar clustering dan PCA, kita masuk ke tahap berikutnya: mencari <b>setting model</b>
+            yang paling cocok. Model yang sama bisa menghasilkan performa berbeda kalau setting yang dipakai
+            berbeda. Proses mencari setting terbaik inilah yang disebut <b>hyperparameter tuning</b>.
           </p>
         </div>
         <span class="chip">Model Setting</span>
       </div>
 
-      <div class="formula-grid">
-        <article class="formula-card">
-          <h3>Masalah Awalnya</h3>
+      <div class="formula-grid tuning-intro-grid">
+        <article class="formula-card simple-explain-card">
+          <h3>Kenapa perlu tuning?</h3>
           <p>
-            Kadang model sudah benar dan dataset sudah siap, tetapi hasilnya belum maksimal.
-            Salah satu penyebabnya adalah setting model yang belum pas. Misalnya nilai <code>C</code>,
-            <code>gamma</code>, atau jumlah pohon pada Random Forest belum cocok.
+            Kadang model machine learning sudah bisa dijalankan, tetapi hasilnya belum tentu maksimal.
+            Salah satu penyebabnya adalah setting model yang belum pas.
           </p>
           <p>
-            Gampangnya, seperti memasak mie instan: jenis mienya sama, tetapi hasilnya bisa berbeda
-            kalau air, waktu rebus, atau bumbunya tidak pas.
+            Contohnya pada SVM, ada setting seperti <code>C</code>, <code>kernel</code>, dan <code>gamma</code>.
+            Nilai-nilai ini bisa memengaruhi cara model belajar dari data.
+          </p>
+          <p>
+            Gampangnya seperti memasak mie instan. Mienya sama, tetapi hasilnya bisa berbeda kalau airnya
+            terlalu banyak, waktu rebusnya terlalu lama, atau bumbunya kurang pas.
           </p>
         </article>
 
-        <article class="formula-card">
+        <article class="formula-card simple-explain-card">
           <h3>Parameter vs Hyperparameter</h3>
-          <ul>
-            <li><b>Parameter</b> adalah nilai yang dipelajari sendiri oleh model saat training.</li>
-            <li><b>Hyperparameter</b> adalah setting yang kita tentukan sebelum model dilatih.</li>
-          </ul>
           <p>
-            Contoh hyperparameter: <code>n_clusters</code> pada K-Means, <code>eps</code> pada DBSCAN,
-            <code>C</code>, <code>kernel</code>, dan <code>gamma</code> pada SVM.
+            <b>Parameter</b> adalah nilai yang dipelajari sendiri oleh model saat proses training.
+            Kita tidak mengaturnya satu per satu secara langsung.
           </p>
+          <p>
+            <b>Hyperparameter</b> adalah setting yang kita tentukan sebelum model dilatih. Setting inilah
+            yang akan kita cari nilainya lewat tuning.
+          </p>
+
+          <div class="example-list">
+            <span>K-Means: <code>n_clusters</code></span>
+            <span>DBSCAN: <code>eps</code>, <code>min_samples</code></span>
+            <span>SVM: <code>C</code>, <code>kernel</code>, <code>gamma</code></span>
+            <span>Random Forest: <code>n_estimators</code>, <code>max_depth</code></span>
+          </div>
         </article>
 
-        <article class="formula-card">
-          <h3>Tujuan Tuning</h3>
+        <article class="formula-card simple-explain-card">
+          <h3>Hasil yang dicari</h3>
           <p>
-            Tujuan tuning adalah mencari kombinasi hyperparameter yang menghasilkan performa terbaik.
-            Biasanya performa dinilai memakai metric tertentu, misalnya <code>accuracy</code>.
+            Setelah tuning selesai, biasanya ada dua hasil yang paling penting untuk dibaca.
           </p>
-          <p>
-            Hasil yang biasanya dicari adalah <code>best_params_</code> dan <code>best_score_</code>.
-          </p>
+
+          <div class="result-list">
+            <div>
+              <strong><code>best_params_</code></strong>
+              <p>Kombinasi setting terbaik yang ditemukan. Misalnya <code>C = 10</code>, <code>kernel = rbf</code>, dan <code>gamma = scale</code>.</p>
+            </div>
+            <div>
+              <strong><code>best_score_</code></strong>
+              <p>Skor terbaik dari proses pencarian. Kalau metric-nya <code>accuracy</code>, berarti ini adalah akurasi terbaik yang didapat saat tuning.</p>
+            </div>
+          </div>
         </article>
       </div>
 
@@ -685,23 +701,23 @@
           </div>
           <div>
             <dt>search space</dt>
-            <dd>Daftar kemungkinan nilai hyperparameter yang akan dicari.</dd>
+            <dd>Ruang pilihan setting yang boleh dicoba oleh proses tuning.</dd>
           </div>
           <div>
             <dt>cv</dt>
-            <dd>Cross-validation. Data dibagi menjadi beberapa bagian agar evaluasi lebih adil.</dd>
+            <dd>Cross-validation. Data dibagi menjadi beberapa bagian agar evaluasi model lebih adil.</dd>
           </div>
           <div>
             <dt>scoring</dt>
-            <dd>Metric yang dipakai untuk menilai model, misalnya <code>accuracy</code>.</dd>
+            <dd>Patokan nilai untuk memilih model terbaik, misalnya <code>accuracy</code>.</dd>
           </div>
           <div>
-            <dt>best_params_</dt>
-            <dd>Kombinasi hyperparameter terbaik yang ditemukan selama tuning.</dd>
+            <dt>n_iter</dt>
+            <dd>Jumlah percobaan yang dilakukan pada Random Search atau Bayesian Optimization.</dd>
           </div>
           <div>
-            <dt>best_score_</dt>
-            <dd>Skor terbaik dari proses pencarian, sesuai metric yang digunakan.</dd>
+            <dt>best result</dt>
+            <dd>Hasil akhir tuning, biasanya berupa <code>best_params_</code> dan <code>best_score_</code>.</dd>
           </div>
         </dl>
       </div>
@@ -915,40 +931,62 @@
           <p class="section-label">Materi 7</p>
           <h2>Bayesian Optimization</h2>
           <p>
-            Random Search lebih cepat, tetapi pemilihannya masih acak. Jika ingin pencarian yang lebih
-            terarah, kita bisa memakai <b>Bayesian Optimization</b>. Metode ini menggunakan hasil percobaan
-            sebelumnya untuk menentukan percobaan berikutnya.
+            Setelah Grid Search dan Random Search, kita masuk ke cara pencarian yang lebih terarah.
+            <b>Bayesian Optimization</b> tidak mencoba semua kombinasi dan tidak memilih secara asal.
+            Metode ini memakai hasil percobaan sebelumnya untuk menentukan percobaan berikutnya.
           </p>
         </div>
-        <span class="chip">Lebih Adaptif</span>
+        <span class="chip">Mencoba Sambil Belajar</span>
       </div>
 
       <div class="lesson-grid">
         <article class="explain-card">
           <h3>Apa itu?</h3>
           <p>
-            Bayesian Optimization adalah metode tuning yang mencoba belajar dari percobaan sebelumnya.
-            Jika percobaan sebelumnya menunjukkan area parameter tertentu cukup bagus, pencarian berikutnya
-            akan lebih diarahkan ke area yang menjanjikan.
+            Bayesian Optimization adalah metode tuning yang mencoba mencari hyperparameter terbaik dengan cara
+            yang lebih pintar. Kalau percobaan sebelumnya menghasilkan skor bagus pada area tertentu,
+            pencarian berikutnya akan lebih diarahkan ke area yang mirip atau lebih menjanjikan.
+          </p>
+          <p>
+            Jadi, bedanya dengan Random Search adalah: Random Search memilih kombinasi secara acak,
+            sedangkan Bayesian Optimization memilih percobaan berikutnya berdasarkan pengalaman dari
+            percobaan sebelumnya.
           </p>
 
           <div class="term-card">
             <h4>Contoh gampang</h4>
             <p>
-              Bayangkan kamu mencari tempat duduk paling nyaman di ruangan. Grid Search mencoba semua kursi.
-              Random Search mencoba beberapa kursi secara acak. Bayesian Optimization mencoba beberapa kursi,
-              lalu belajar area mana yang paling nyaman untuk dicoba lagi.
+              Bayangkan kamu sedang mencari rasa minuman paling enak. Grid Search mencoba semua kombinasi rasa.
+              Random Search mencoba beberapa kombinasi secara acak. Bayesian Optimization mencoba beberapa
+              kombinasi dulu, melihat mana yang rasanya paling enak, lalu percobaan berikutnya diarahkan ke
+              kombinasi yang mirip dengan hasil yang bagus tadi.
             </p>
           </div>
 
           <div class="formula-card compact-formula purple-formula">
-            <h4>Contoh di kode</h4>
-            <code>BayesSearchCV(..., search_spaces={ "C": Real(...), "gamma": Real(...), "kernel": Categorical(...) })</code>
+            <h4>Cara kerja sederhananya</h4>
+            <ol class="simple-steps">
+              <li>Mencoba beberapa kombinasi hyperparameter terlebih dahulu.</li>
+              <li>Melihat skor dari setiap percobaan.</li>
+              <li>Menebak area parameter mana yang kemungkinan menghasilkan skor lebih baik.</li>
+              <li>Mencoba kombinasi baru di area yang lebih menjanjikan.</li>
+              <li>Mengulangi proses tersebut sampai jumlah iterasi selesai.</li>
+            </ol>
+          </div>
+
+          <div class="formula-card compact-formula purple-formula">
+            <h4>Contoh istilah di kode</h4>
+            <p>
+              Di Python, Bayesian Optimization bisa dijalankan dengan <code>BayesSearchCV</code>.
+              Bagian yang berisi ruang pencarian parameter disebut <code>search_spaces</code>.
+            </p>
             <ul>
-              <li><b>search_spaces</b> adalah ruang pencarian parameter.</li>
-              <li><b>Real</b> berarti nilainya berupa angka dalam rentang tertentu.</li>
-              <li><b>Categorical</b> berarti pilihannya berupa kategori, misalnya <code>linear</code> atau <code>rbf</code>.</li>
-              <li><b>n_iter</b> adalah jumlah percobaan yang dilakukan.</li>
+              <li><b><code>BayesSearchCV</code></b> adalah alat untuk menjalankan Bayesian Optimization.</li>
+              <li><b><code>search_spaces</code></b> adalah daftar parameter dan rentang nilai yang boleh dicoba.</li>
+              <li><b><code>n_iter</code></b> adalah jumlah percobaan yang dilakukan.</li>
+              <li><b><code>Real</code></b> dipakai untuk parameter berupa angka dalam rentang tertentu.</li>
+              <li><b><code>Categorical</code></b> dipakai untuk parameter berupa pilihan kategori, misalnya <code>linear</code> atau <code>rbf</code>.</li>
+              <li><b><code>log-uniform</code></b> membantu pencarian pada rentang angka yang sangat lebar, misalnya dari 0.001 sampai 1000.</li>
             </ul>
           </div>
 
@@ -985,14 +1023,15 @@
           <div class="demo-guide purple-box">
             <h4>Cara membaca demo</h4>
             <p id="bayesGuide">
-              Setiap iterasi adalah percobaan kombinasi parameter. Bayesian Optimization memakai hasil
-              percobaan sebelumnya untuk memilih percobaan berikutnya yang lebih menjanjikan.
+              Setiap baris adalah satu percobaan kombinasi parameter. Tanda bintang menunjukkan skor terbaik
+              sementara. Ketika iterasi bertambah, metode punya lebih banyak kesempatan untuk menemukan area
+              parameter yang hasilnya lebih baik.
             </p>
           </div>
 
           <div class="try-box purple-box">
-            <b>Coba amati:</b> tambah jumlah iterasi. Semakin banyak iterasi, semakin banyak kesempatan
-            metode ini mencari area parameter yang menghasilkan skor tinggi.
+            <b>Coba amati:</b> tambah jumlah iterasi. Perhatikan bagaimana percobaan bertambah dan skor terbaik
+            ikut diperbarui jika ditemukan hasil yang lebih bagus.
           </div>
         </article>
       </div>

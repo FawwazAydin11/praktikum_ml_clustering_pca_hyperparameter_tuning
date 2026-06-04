@@ -950,10 +950,10 @@ function updateBayesianDemo() {
   setText("bayesBestScoreMetric", bestScore.toFixed(3));
 
   const guide = iterations <= 4
-    ? `Dengan ${iterations} iterasi, Bayesian Optimization baru punya sedikit pengalaman untuk menentukan arah pencarian berikutnya.`
+    ? `Dengan ${iterations} iterasi, metode ini baru mencoba beberapa kombinasi. Informasi yang dimiliki masih sedikit, jadi arah pencariannya belum terlalu yakin.`
     : iterations <= 8
-      ? `Dengan ${iterations} iterasi, metode mulai memakai hasil percobaan sebelumnya untuk memilih area parameter yang lebih menjanjikan.`
-      : `Dengan ${iterations} iterasi, kesempatan mencari area skor tinggi makin besar. Namun, semakin banyak iterasi, proses tuning juga semakin lama.`;
+      ? `Dengan ${iterations} iterasi, metode mulai punya pengalaman dari percobaan sebelumnya. Percobaan berikutnya bisa diarahkan ke area parameter yang lebih menjanjikan.`
+      : `Dengan ${iterations} iterasi, kesempatan menemukan skor tinggi makin besar. Namun, semakin banyak iterasi, proses tuning juga akan semakin lama.`;
 
   setText("bayesGuide", guide);
 

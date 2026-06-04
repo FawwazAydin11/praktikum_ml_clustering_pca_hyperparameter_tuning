@@ -890,15 +890,112 @@ canvas {
   margin-top: 18px;
 }
 
-.tuning-term-card code,
-.formula-card code,
+.tuning-intro-grid {
+  align-items: stretch;
+}
+
+.simple-explain-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.example-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.example-list span {
+  display: block;
+  padding: 11px 12px;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px solid #eef2f7;
+  color: #334155;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.result-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.result-list div {
+  padding: 12px;
+  border-radius: 16px;
+  background: #f8fafc;
+  border: 1px solid #eef2f7;
+}
+
+.result-list strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #0f172a;
+  font-size: 14px;
+}
+
+.result-list p {
+  margin: 0;
+}
+
+.simple-steps {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.simple-steps li {
+  position: relative;
+  min-height: 38px;
+  padding: 10px 12px 10px 46px;
+  border-radius: 15px;
+  background: #ffffff;
+  border: 1px solid #e9d5ff;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.6;
+  counter-increment: step;
+}
+
+.simple-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 12px;
+  top: 11px;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  font-size: 12px;
+  font-weight: 950;
+}
+
+p code,
+li code,
+dd code,
+dt code,
 .try-box code,
-.demo-guide code {
+.demo-guide code,
+.result-list code,
+.example-list code {
+  display: inline;
   padding: 2px 6px;
+  margin: 0;
   border-radius: 8px;
   background: rgba(241, 245, 249, 0.95);
+  border: 1px solid rgba(226, 232, 240, 0.9);
   color: #1e293b;
   font-size: 0.92em;
+  line-height: 1.7;
+  white-space: normal;
 }
 
 .tuning-section {
